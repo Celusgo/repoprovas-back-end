@@ -17,7 +17,7 @@ app.get("/inicio", optionsController.getOptions);
 app.get("/send", optionsController.getTeacherSubject);
 app.post("/send", insertionsController.newTest);
 app.get("/disciplines/:id", optionsController.getTestsById);
-//app.get("/teachers/:teacherId/:subjectId", )
+app.get("/teachers/:teacherId/:id", optionsController.getTeachersById);
 
 export async function init () {
   await connectDatabase();

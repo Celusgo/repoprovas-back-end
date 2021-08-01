@@ -5,6 +5,7 @@ import * as periodService from "../services/periodService";
 import * as teacherSubjectService from "../services/teacherSubjectService";
 import * as subjectTeacherService from "../services/subjectTeacherService";
 import * as getTestsByIdService from "../services/getTestsByIdService";
+import * as getTestsByTeacherAndSubjectIdService from "../services/getTestsByTeacherAndSubjectIdService";
 
 
 export async function getOptions (req: Request, res: Response) {
@@ -34,6 +35,19 @@ export async function getTestsById (req: Request, res: Response) {
 
   try {
     const request = await getTestsByIdService.getById(id);
+    res.status(200).send(request);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
+export async function getTeachersById (req: Request, res: Response) {
+  const id: number = Number(req.params.id);
+  const teacherId: number = Number(req.params.teacherId);
+
+  try {
+    const request = await getTestsByTeacherAndSubjectIdService.getAllByTeacherId(id, teacherId);
     res.status(200).send(request);
   } catch (err) {
     console.error(err);
