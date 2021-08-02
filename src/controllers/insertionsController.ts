@@ -11,7 +11,7 @@ export async function newTest(req: Request, res: Response){
     const { name, category, teacher, subject, link}: {name: string, category:string, teacher:string, subject:string, link:string } = req.body;
     const validate = newTestSchema.validate(req.body);
 
-    if (validate.error) return console.log(validate.error);
+    if (validate.error) return res.sendStatus(400);
     try{
       const teachers = await findTeacherService.findTeachers(teacher);
       if(!teachers) return res.sendStatus(406);

@@ -58,7 +58,8 @@ export async function getTeachersById (req: Request, res: Response) {
 
   try {
     const request = await getTestsByTeacherAndSubjectIdService.getAllByTeacherId(id, teacherId);
-    res.status(200).send(request);
+    if(!request) return res.sendStatus(400);
+    return res.status(200).send(request);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
