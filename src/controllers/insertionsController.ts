@@ -5,8 +5,13 @@ import * as findSubjectService from "../services/findSubjectService";
 import * as findCategoryService from "../services/findCategoryService";
 import * as createTestService from "../services/createTestService";
 
+import { newTestSchema } from "../schemas/testSchema";
+
 export async function newTest(req: Request, res: Response){
-    const { name,category, teacher, subject, link}: {name: string, category:string, teacher:string, subject:string, link:string } = req.body;
+    const { name, category, teacher, subject, link}: {name: string, category:string, teacher:string, subject:string, link:string } = req.body;
+    const validate = newTestSchema.validate(req.body);
+
+    if (validate.error) return console.log(validate.error);
     try{
       const teachers = await findTeacherService.findTeachers(teacher);
       if(!teachers) return res.sendStatus(406);
@@ -14,8 +19,8 @@ export async function newTest(req: Request, res: Response){
       if(!subjects) return res.sendStatus(406);
       const categories = await findCategoryService.findCategory(category);
       if(!categories) return res.sendStatus(406);
-      const newTest = await createTestService.createTest(name, categories.id, teachers.id, subjects.id,  link)
-      res.status(201).send(newTest);
+      await createTestService.createTest(name, categories.id, teachers.id, subjects.id,  link)
+      res.sendStatus(201);
   
     } catch(err){
       console.log(err);
